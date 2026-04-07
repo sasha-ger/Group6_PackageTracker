@@ -1,1 +1,20 @@
-<p>my-deliveries works!</p>
+<div class="my-deliveries-container">
+  <h2>My Deliveries</h2>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <div *ngIf="deliveries.length === 0 && !error" class="empty">
+    <p>You have no deliveries yet.</p>
+  </div>
+
+  <div *ngFor="let d of deliveries" class="delivery-card">
+    <h3>Package #{{ d.packageId }}</h3>
+
+    <p><strong>Status:</strong> {{ d.status }}</p>
+    <p><strong>Current Depot:</strong> {{ d.currentDepotId }}</p>
+    <p><strong>Last Updated:</strong> {{ d.timestamp }}</p>
+  </div>
+</div>
+
+
+//<p>my-deliveries works!</p>

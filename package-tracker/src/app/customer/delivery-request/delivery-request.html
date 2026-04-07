@@ -1,1 +1,31 @@
-<p>delivery-request works!</p>
+<div class="delivery-request-container">
+  <h2>Request a Delivery</h2>
+
+  <div class="form">
+    <label>Pickup Location</label>
+    <input
+      type="text"
+      [(ngModel)]="origin"
+      placeholder="Enter pickup address"
+    />
+
+    <label>Destination</label>
+    <input
+      type="text"
+      [(ngModel)]="destination"
+      placeholder="Enter destination address"
+    />
+
+    <button (click)="submitRequest()">Submit Request</button>
+  </div>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <div class="success" *ngIf="submitted">
+    <h3>Your delivery request has been submitted!</h3>
+    <p>A drone will be dispatched shortly.</p>
+  </div>
+</div>
+
+
+//<p>delivery-request works!</p>

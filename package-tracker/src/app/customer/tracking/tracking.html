@@ -1,1 +1,25 @@
-<p>tracking works!</p>
+<div class="tracking-container">
+  <h2>Track Your Package</h2>
+
+  <div class="input-row">
+    <input
+      type="number"
+      [(ngModel)]="packageId"
+      placeholder="Enter Package ID"
+    />
+    <button (click)="track()">Track</button>
+  </div>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <div class="status-card" *ngIf="status">
+    <h3>Status: {{ status.status }}</h3>
+
+    <p><strong>Package ID:</strong> {{ status.packageId }}</p>
+    <p><strong>Current Depot:</strong> {{ status.currentDepotId }}</p>
+    <p><strong>Last Updated:</strong> {{ status.timestamp }}</p>
+  </div>
+</div>
+
+
+//<p>tracking works!</p>
