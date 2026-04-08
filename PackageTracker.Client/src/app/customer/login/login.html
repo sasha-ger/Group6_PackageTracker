@@ -1,5 +1,18 @@
 <div class="login-container">
-  <h2>Customer Login</h2>
+  <h2>{{ isStaff ? 'Staff Login' : 'Customer Login' }}</h2>
+  
+  <div class="role-toggle">
+    <button 
+      [class.active]="!isStaff" 
+      (click)="isStaff = false">
+      Customer
+    </button>
+    <button 
+      [class.active]="isStaff" 
+      (click)="isStaff = true">
+      Staff
+    </button>
+  </div>
 
   <form (ngSubmit)="login()">
     <label>Email</label>
@@ -10,7 +23,6 @@
       required
       placeholder="Enter your email"
     />
-
     <label>Password</label>
     <input
       type="password"
@@ -19,7 +31,6 @@
       required
       placeholder="Enter your password"
     />
-
     <button type="submit">Login</button>
   </form>
 
@@ -27,4 +38,3 @@
     <p class="error">{{ error }}</p>
   }
 </div>
-
