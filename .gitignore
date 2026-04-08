@@ -8,6 +8,7 @@ obj/
 *.DS_Store
 
 # ── ASP.NET ───────────────────────────────────────
+appsettings.json
 appsettings.*.json
 !appsettings.Development.json
 

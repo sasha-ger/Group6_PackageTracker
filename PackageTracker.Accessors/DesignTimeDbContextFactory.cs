@@ -12,8 +12,7 @@ namespace PackageTracker.Accessors
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddJsonFile("appsettings.json", optional: true);
 
             var config = builder.Build();
             var conn = config.GetConnectionString("DefaultConnection") ??
