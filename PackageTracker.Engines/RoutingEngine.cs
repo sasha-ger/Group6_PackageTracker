@@ -7,12 +7,12 @@ public class RoutingEngine : IRoutingEngine
         throw new NotImplementedException();
     }
 
-    public bool IsWithinRange(double lat, double lng)
+    public Task<bool> IsWithinRange(double lat, double lng)
     {
         throw new NotImplementedException();
     }
 
-    public int FindNearestDepot(double lat, double lng)
+    public Task<int> FindNearestDepot(double lat, double lng)
     {
         throw new NotImplementedException();
     }

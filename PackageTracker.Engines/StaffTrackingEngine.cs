@@ -1,18 +1,20 @@
+using PackageTracker.Models;
+
 namespace PackageTracker.Engines;
 
 public class StaffTrackingEngine : IStaffTrackingEngine
 {
-    public object GetAllDroneStatuses()
+    public Task<List<Drone>> GetAllDroneStatuses()
     {
         throw new NotImplementedException();
     }
 
-    public object GetPackageAssignedToDrone(int droneId)
+    public Task<Package?> GetPackageAssignedToDrone(int droneId)
     {
         throw new NotImplementedException();
     }
 
-    public object GetAllActivePackages()
+    public Task<List<Package>> GetAllActivePackages()
     {
         throw new NotImplementedException();
     }
