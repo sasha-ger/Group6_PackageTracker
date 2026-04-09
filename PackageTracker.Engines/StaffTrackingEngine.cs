@@ -13,6 +13,7 @@ public class StaffTrackingEngine(IDroneAccessor droneAccessor, IPackageAccessor 
     public Task<Package?> GetPackageAssignedToDrone(int droneId)
     {
         // TODO: Cannot implement until the schema links a drone to a package.
+        // Should probably add CurrentPackageID to Drone in DB
         throw new NotImplementedException();
     }
 
