@@ -12,7 +12,7 @@ using PackageTracker.Accessors.Data;
 namespace PackageTracker.Accessors.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260408193028_InitialCreate")]
+    [Migration("20260409012946_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -33,10 +33,16 @@ namespace PackageTracker.Accessors.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("location")
+                    b.Property<int>("LocationId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("Depots");
                 });
@@ -49,20 +55,20 @@ namespace PackageTracker.Accessors.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("destination")
+                    b.Property<int?>("CurrentDepotId")
                         .HasColumnType("int");
 
-                    b.Property<int>("homeDepot")
+                    b.Property<int>("HomeDepotId")
                         .HasColumnType("int");
 
-                    b.Property<int>("origin")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
-
-                    b.Property<string>("status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CurrentDepotId");
+
+                    b.HasIndex("HomeDepotId");
 
                     b.ToTable("Drones");
                 });
@@ -75,15 +81,15 @@ namespace PackageTracker.Accessors.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
-
-                    b.Property<string>("address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -101,14 +107,21 @@ namespace PackageTracker.Accessors.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DestinationLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OriginLocationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Recipient")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Sender")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("TrackingNumber")
                         .IsRequired()
@@ -117,13 +130,13 @@ namespace PackageTracker.Accessors.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("destination")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("origin")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("DestinationLocationId");
+
+                    b.HasIndex("OriginLocationId");
+
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Packages");
                 });
@@ -136,33 +149,88 @@ namespace PackageTracker.Accessors.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("email")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("firstname")
+                    b.Property<string>("Firstname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("lastname")
+                    b.Property<string>("Lastname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("password")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
-                    b.Property<string>("username")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("PackageTracker.Models.Depot", b =>
+                {
+                    b.HasOne("PackageTracker.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("PackageTracker.Models.Drone", b =>
+                {
+                    b.HasOne("PackageTracker.Models.Depot", "CurrentDepot")
+                        .WithMany()
+                        .HasForeignKey("CurrentDepotId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PackageTracker.Models.Depot", "HomeDepot")
+                        .WithMany()
+                        .HasForeignKey("HomeDepotId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CurrentDepot");
+
+                    b.Navigation("HomeDepot");
+                });
+
+            modelBuilder.Entity("PackageTracker.Models.Package", b =>
+                {
+                    b.HasOne("PackageTracker.Models.Location", "DestinationLocation")
+                        .WithMany()
+                        .HasForeignKey("DestinationLocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PackageTracker.Models.Location", "OriginLocation")
+                        .WithMany()
+                        .HasForeignKey("OriginLocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PackageTracker.Models.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DestinationLocation");
+
+                    b.Navigation("OriginLocation");
+
+                    b.Navigation("Sender");
                 });
 #pragma warning restore 612, 618
         }
