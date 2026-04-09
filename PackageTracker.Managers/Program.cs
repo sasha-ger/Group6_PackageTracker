@@ -1,14 +1,22 @@
 using Microsoft.EntityFrameworkCore;
+using PackageTracker.Accessors;
 using PackageTracker.Accessors.Data;
+using PackageTracker.Accessors.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("PackageTracker.Accessors")));
 
-builder.Services.AddControllers();
+// Accessors
+builder.Services.AddScoped<IPackageAccessor, PackageAccessor>();
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+builder.Services.AddScoped<IDroneAccessor, DroneAccessor>();
+builder.Services.AddScoped<IDepotAccessor, DepotAccessor>();
+builder.Services.AddScoped<ILocationAccessor, LocationAccessor>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -23,7 +31,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();
