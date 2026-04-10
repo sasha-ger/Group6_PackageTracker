@@ -27,6 +27,7 @@ builder.Services.AddScoped<ILocationAccessor, LocationAccessor>();
 builder.Services.AddScoped<IPackageStatusEventAccessor, PackageStatusEventAccessor>();
 
 // Engines
+builder.Services.AddScoped<IAuthEngine, AuthEngine>();
 builder.Services.AddScoped<IRequestEngine, RequestEngine>();
 builder.Services.AddScoped<IRoutingEngine, RoutingEngine>();
 builder.Services.AddScoped<IUserTrackingEngine, UserTrackingEngine>();

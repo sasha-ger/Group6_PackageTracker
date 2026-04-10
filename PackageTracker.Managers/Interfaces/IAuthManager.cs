@@ -11,9 +11,9 @@ public interface IAuthManager
     // Ends the session — client should discard the token
     IActionResult Logout();
 
-    // Returns the role (customer or staff) encoded in the token — no DB lookup
-    IActionResult GetUserRole();
+    // Decodes the given token and returns the role claim — no DB lookup
+    IActionResult GetUserRole(string token);
 
-    // Checks that the token in the Authorization header is valid and not expired
-    IActionResult ValidateToken();
+    // Returns true if the given token is valid and not expired
+    IActionResult ValidateToken(string token);
 }

@@ -1,65 +1,21 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Moq;
-using PackageTracker.Accessors.Interfaces;
+using PackageTracker.Engines;
 using PackageTracker.Managers.Controllers;
 using PackageTracker.Managers.Dtos;
-using PackageTracker.Models;
-using PackageTracker.Models.Enums;
 
 namespace PackageTracker.Tests;
 
 public class AuthControllerTests
 {
-    private readonly Mock<IUserAccessor> _mockUserAccessor = new();
-    private readonly Mock<IConfiguration> _mockConfig = new();
+    private readonly Mock<IAuthEngine> _mockAuthEngine = new();
     private readonly AuthController _controller;
 
-    private static readonly User TestUser = new()
-    {
-        Id = 1,
-        Email = "jane@example.com",
-        Password = "password123",
-        Username = "jane",
-        Firstname = "Jane",
-        Lastname = "Doe",
-        Role = UserRole.Customer
-    };
+    private const string ValidToken = "valid.jwt.token";
 
     public AuthControllerTests()
     {
-        _mockConfig.Setup(c => c["Jwt:Secret"]).Returns("super-secret-test-key-that-is-32-chars!!");
-        _mockConfig.Setup(c => c["Jwt:Issuer"]).Returns("PackageTrackerApi");
-        _mockConfig.Setup(c => c["Jwt:Audience"]).Returns("PackageTrackerClient");
-
-        _controller = new AuthController(_mockUserAccessor.Object, _mockConfig.Object);
-    }
-
-    // Helper to set up a ClaimsPrincipal on the controller's HttpContext
-    private void SetUserClaims(int userId, string role)
-    {
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.NameIdentifier, userId.ToString()),
-            new(ClaimTypes.Role, role)
-        };
-        var identity = new ClaimsIdentity(claims, "TestAuth");
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(identity) }
-        };
-    }
-
-    private void SetUserClaimsWithoutRole()
-    {
-        var identity = new ClaimsIdentity(new List<Claim>(), "TestAuth");
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(identity) }
-        };
+        _controller = new AuthController(_mockAuthEngine.Object);
     }
 
     // --- Login ---
@@ -67,36 +23,22 @@ public class AuthControllerTests
     [Fact]
     public async Task Login_ValidCredentials_ReturnsOkWithToken()
     {
-        _mockUserAccessor.Setup(a => a.GetByEmail("jane@example.com")).ReturnsAsync(TestUser);
+        _mockAuthEngine.Setup(e => e.Login("jane@example.com", "password123")).ReturnsAsync(ValidToken);
 
         var result = await _controller.Login(new LoginRequestDto { Email = "jane@example.com", Password = "password123" });
 
         var ok = Assert.IsType<OkObjectResult>(result);
         var token = ok.Value?.GetType().GetProperty("token")?.GetValue(ok.Value) as string;
-        Assert.NotNull(token);
-
-        // Verify the token is a valid JWT with the expected claims
-        var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
-        Assert.Equal("jane@example.com", jwt.Claims.First(c => c.Type == JwtRegisteredClaimNames.Email).Value);
-        Assert.Equal("Customer", jwt.Claims.First(c => c.Type == ClaimTypes.Role).Value);
+        Assert.Equal(ValidToken, token);
     }
 
     [Fact]
-    public async Task Login_UserNotFound_ReturnsUnauthorized()
+    public async Task Login_InvalidCredentials_ReturnsUnauthorized()
     {
-        _mockUserAccessor.Setup(a => a.GetByEmail(It.IsAny<string>())).ReturnsAsync((User?)null);
+        _mockAuthEngine.Setup(e => e.Login(It.IsAny<string>(), It.IsAny<string>()))
+            .ThrowsAsync(new UnauthorizedAccessException("Invalid email or password."));
 
-        var result = await _controller.Login(new LoginRequestDto { Email = "nobody@example.com", Password = "pass" });
-
-        Assert.IsType<UnauthorizedObjectResult>(result);
-    }
-
-    [Fact]
-    public async Task Login_WrongPassword_ReturnsUnauthorized()
-    {
-        _mockUserAccessor.Setup(a => a.GetByEmail("jane@example.com")).ReturnsAsync(TestUser);
-
-        var result = await _controller.Login(new LoginRequestDto { Email = "jane@example.com", Password = "wrongpassword" });
+        var result = await _controller.Login(new LoginRequestDto { Email = "bad@example.com", Password = "wrong" });
 
         Assert.IsType<UnauthorizedObjectResult>(result);
     }
@@ -114,11 +56,11 @@ public class AuthControllerTests
     // --- GetUserRole ---
 
     [Fact]
-    public void GetUserRole_WithRoleClaim_ReturnsRole()
+    public void GetUserRole_ValidToken_ReturnsRole()
     {
-        SetUserClaims(1, "Staff");
+        _mockAuthEngine.Setup(e => e.GetUserRole(ValidToken)).Returns("Staff");
 
-        var result = _controller.GetUserRole();
+        var result = _controller.GetUserRole(ValidToken);
 
         var ok = Assert.IsType<OkObjectResult>(result);
         var role = ok.Value?.GetType().GetProperty("role")?.GetValue(ok.Value) as string;
@@ -126,11 +68,12 @@ public class AuthControllerTests
     }
 
     [Fact]
-    public void GetUserRole_WithoutRoleClaim_ReturnsUnauthorized()
+    public void GetUserRole_EngineThrows_ReturnsUnauthorized()
     {
-        SetUserClaimsWithoutRole();
+        _mockAuthEngine.Setup(e => e.GetUserRole(It.IsAny<string>()))
+            .Throws(new InvalidOperationException("No role claim found in token."));
 
-        var result = _controller.GetUserRole();
+        var result = _controller.GetUserRole("bad.token");
 
         Assert.IsType<UnauthorizedObjectResult>(result);
     }
@@ -138,11 +81,24 @@ public class AuthControllerTests
     // --- ValidateToken ---
 
     [Fact]
-    public void ValidateToken_ReturnsOk()
+    public void ValidateToken_ValidToken_ReturnsOkTrue()
     {
-        var result = _controller.ValidateToken();
+        _mockAuthEngine.Setup(e => e.ValidateToken(ValidToken)).Returns(true);
+
+        var result = _controller.ValidateToken(ValidToken);
 
         var ok = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(true, ok.Value);
+    }
+
+    [Fact]
+    public void ValidateToken_InvalidToken_ReturnsOkFalse()
+    {
+        _mockAuthEngine.Setup(e => e.ValidateToken("bad.token")).Returns(false);
+
+        var result = _controller.ValidateToken("bad.token");
+
+        var ok = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(false, ok.Value);
     }
 }
