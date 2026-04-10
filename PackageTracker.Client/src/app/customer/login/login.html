@@ -1,40 +1,97 @@
-<div class="login-container">
-  <h2>{{ isStaff ? 'Staff Login' : 'Customer Login' }}</h2>
-  
-  <div class="role-toggle">
-    <button 
-      [class.active]="!isStaff" 
-      (click)="isStaff = false">
-      Customer
-    </button>
-    <button 
-      [class.active]="isStaff" 
-      (click)="isStaff = true">
-      Staff
-    </button>
+<div class="login-wrapper">
+  <div class="login-left">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>Mo's Drones</h1>
+        <p>Package Tracker</p>
+      </div>
+    </div>
+
+    <div class="login-card">
+      <h2>{{ isStaff ? 'Staff Portal' : 'Welcome back' }}</h2>
+      <p class="subtitle">{{ isStaff ? 'Access the operations dashboard' : 'Track and manage your deliveries' }}</p>
+
+      <div class="role-toggle">
+        <button [class.active]="!isStaff" (click)="isStaff = false">Customer</button>
+        <button [class.active]="isStaff" (click)="isStaff = true">Staff</button>
+      </div>
+
+      <form (ngSubmit)="login()">
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" [(ngModel)]="email" name="email" required placeholder="you@example.com"/>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" [(ngModel)]="password" name="password" required placeholder="••••••••"/>
+        </div>
+        <button class="login-btn" type="submit">
+          {{ isStaff ? 'Access Dashboard' : 'Track My Packages' }}
+        </button>
+      </form>
+
+      @if (error) {
+        <p class="error">{{ error }}</p>
+      }
+    </div>
   </div>
 
-  <form (ngSubmit)="login()">
-    <label>Email</label>
-    <input
-      type="email"
-      [(ngModel)]="email"
-      name="email"
-      required
-      placeholder="Enter your email"
-    />
-    <label>Password</label>
-    <input
-      type="password"
-      [(ngModel)]="password"
-      name="password"
-      required
-      placeholder="Enter your password"
-    />
-    <button type="submit">Login</button>
-  </form>
+  <div class="login-right">
+    <div>
+      <p class="tagline">Track every<br>drone, every<br><span>delivery.</span></p>
+      <p>Real-time package tracking across Lincoln and Omaha via drone depot network.</p>
 
-  @if (error) {
-    <p class="error">{{ error }}</p>
-  }
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-number">11</div>
+          <div class="stat-label">Depots</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">10</div>
+          <div class="stat-label">Drones</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">16km</div>
+          <div class="stat-label">Range</div>
+        </div>
+      </div>
+
+      <div class="tracking-preview">
+        <div class="preview-label">Live tracking example</div>
+        <div class="preview-event">
+          <div class="dot green"></div>
+          <div class="event-info">
+            <div class="event-title">Package delivered</div>
+            <div class="event-time">Lincoln O & 84th · 2:45 PM</div>
+          </div>
+        </div>
+        <div class="preview-event">
+          <div class="dot blue"></div>
+          <div class="event-info">
+            <div class="event-title">Depot handoff — Waverly</div>
+            <div class="event-time">I-80 Corridor · 1:30 PM</div>
+          </div>
+        </div>
+        <div class="preview-event">
+          <div class="dot blue"></div>
+          <div class="event-info">
+            <div class="event-title">SUAS dispatched</div>
+            <div class="event-time">Seward Depot · 12:15 PM</div>
+          </div>
+        </div>
+        <div class="preview-event">
+          <div class="dot gray"></div>
+          <div class="event-info">
+            <div class="event-title">Delivery requested</div>
+            <div class="event-time">Today · 12:00 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

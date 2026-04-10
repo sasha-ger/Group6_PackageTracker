@@ -1,37 +1,46 @@
 <div class="dashboard">
 
+    <div class="theme-toggle" (click)="toggleTheme()">
+        {{ isDark() ? 'Light Mode' : 'Dark Mode' }}
+      </div>
+
     <div class="header">
-      <h1>Staff Dashboard</h1>
-      <p>Mo's Drones — Package Tracker</p>
+      <div class="red-bar"></div>
+      <div>
+        <h1>Staff Dashboard</h1>
+        <p>Mo's Drones — Operations Center</p>
+      </div>
     </div>
   
-    <!-- Summary Cards -->
     <div class="cards">
-      <div class="card blue">
+      <div class="card">
         <h3>Total Drones</h3>
         <p class="number">{{ totalDrones }}</p>
       </div>
-      <div class="card green">
+      <div class="card">
         <h3>Idle Drones</h3>
         <p class="number">{{ idleDrones }}</p>
       </div>
-      <div class="card orange">
+      <div class="card highlight">
         <h3>Active Drones</h3>
         <p class="number">{{ activeDrones }}</p>
       </div>
-      <div class="card purple">
+      <div class="card highlight">
         <h3>In Transit</h3>
         <p class="number">{{ inTransitPackages }}</p>
       </div>
-      <div class="card teal">
+      <div class="card">
         <h3>Delivered</h3>
         <p class="number">{{ deliveredPackages }}</p>
       </div>
     </div>
   
-    <!-- Drones Table -->
+    <!-- Drones -->
     <div class="section">
-      <h2>Drone Status</h2>
+      <div class="section-header">
+        <h2>Drone Status</h2>
+        <span class="count">{{ suas.length }}</span>
+      </div>
       <table>
         <thead>
           <tr>
@@ -58,14 +67,18 @@
       </table>
     </div>
   
-    <!-- Depots Table -->
+    <!-- Depots -->
     <div class="section">
-      <h2>Depot Overview</h2>
+      <div class="section-header">
+        <h2>Depot Network</h2>
+        <span class="count">{{ depots.length }}</span>
+      </div>
       <table>
         <thead>
           <tr>
-            <th>Depot ID</th>
+            <th>ID</th>
             <th>Name</th>
+            <th>Coordinates</th>
             <th>Location (km)</th>
             <th>Available Drones</th>
           </tr>
@@ -74,16 +87,20 @@
           <tr *ngFor="let d of depots">
             <td>{{ d.depotId }}</td>
             <td>{{ d.name }}</td>
-            <td>{{ d.locationKm }}</td>
+            <td class="coords">{{ d.address }}</td>
+            <td>{{ d.locationKm }} km</td>
             <td>{{ d.availableSuas.length }}</td>
           </tr>
         </tbody>
       </table>
     </div>
   
-    <!-- Recent Packages -->
+    <!-- Packages -->
     <div class="section">
-      <h2>Recent Packages</h2>
+      <div class="section-header">
+        <h2>Recent Packages</h2>
+        <span class="count">{{ packages.length }}</span>
+      </div>
       <table>
         <thead>
           <tr>

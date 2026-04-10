@@ -1,1 +1,65 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #e63946;
+  --primary-light: #fff0f0;
+  --primary-dark: #c1121f;
+  --bg: #f7f8fa;
+  --bg-card: #ffffff;
+  --bg-surface: #f0f2f5;
+  --border: #e8eaed;
+  --border-strong: #d0d3d8;
+  --text-primary: #1a1a2e;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --success: #10b981;
+  --success-light: #ecfdf5;
+  --warning: #f59e0b;
+  --warning-light: #fffbeb;
+  --info: #3b82f6;
+  --info-light: #eff6ff;
+  --danger-light: #fff0f0;
+}
+
+body.dark-theme {
+  --bg: #0f0f0f;
+  --bg-card: #1a1a1a;
+  --bg-surface: #222222;
+  --border: #2a2a2a;
+  --border-strong: #3a3a3a;
+  --text-primary: #f0f0f0;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --primary-light: #2a1515;
+  --success-light: #0a2a1a;
+  --warning-light: #2a1f0a;
+  --info-light: #0a1a2a;
+  --danger-light: #2a0a0a;
+}
+
+body.light-theme {
+  --bg: #f7f8fa;
+  --bg-card: #ffffff;
+  --bg-surface: #f0f2f5;
+  --border: #e8eaed;
+  --border-strong: #d0d3d8;
+  --text-primary: #1a1a2e;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { SuasService } from '../../core/services/suas.service';
 import { DepotService } from '../../core/services/depot.service';
 import { DeliveryService } from '../../core/services/delivery.service';
+import { ThemeService } from '../../core/services/theme';
 import { SUAS, Depot, Package } from '../../models';
 
 @Component({
@@ -28,8 +29,12 @@ export class DashboardComponent implements OnInit {
   constructor(
     private suasService: SuasService,
     private depotService: DepotService,
-    private deliveryService: DeliveryService
+    private deliveryService: DeliveryService,
+    private themeService: ThemeService
   ) {}
+
+  isDark() { return this.themeService.isDark(); }
+  toggleTheme() { this.themeService.toggle(); }
 
   ngOnInit() {
     this.suasService.getAllSuas().subscribe(data => {
