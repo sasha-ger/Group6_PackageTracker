@@ -28,7 +28,7 @@ public class RequestEngine : IRequestEngine
         _eventAccessor = eventAccessor;
     }
 
-    public async Task ProcessDeliveryRequest(int customerId, string originAddress, double originLat, double originLng, string destinationAddress, double destinationLat, double destinationLng, double weight, string recipient)
+    public async Task ProcessDeliveryRequest(int customerId, string originAddress, double originLat, double originLng, string destinationAddress, double destinationLat, double destinationLng, string recipient)
     {
         var validLocations = await ValidateDeliveryLocations(originLat, originLng, destinationLat, destinationLng);
 

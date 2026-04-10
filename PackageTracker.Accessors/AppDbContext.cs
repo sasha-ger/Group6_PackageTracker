@@ -78,17 +78,17 @@ public class AppDbContext : DbContext
 
 		//populating 
 		modelBuilder.Entity<Location>().HasData(
-		 new Depot { Id = 1, name = "Seward Depot", LocationId = 1 },
-		 new Depot { Id = 2, name = "Pawnee Lake Depot", LocationId = 2 },
-		 new Depot { Id = 3, name = "Lincoln Northwest Depot", LocationId = 3 },
-		 new Depot { Id = 4, name = "Waverly Depot", LocationId = 4 },
-		 new Depot { Id = 5, name = "Greenwood Depot", LocationId = 5 },
-		 new Depot { Id = 6, name = "Melia Depot", LocationId = 6 },
-		 new Depot { Id = 7, name = "Millard Depot", LocationId = 7 },
-		 new Depot { Id = 8, name = "Omaha Depot", LocationId = 8 },
-		 new Depot { Id = 9, name = "Depot at 27th and O St", LocationId = 9 },
-		 new Depot { Id = 10, name = "Depot at 84th and O St", LocationId = 10 },
-		 new Depot { Id = 11, name = "Depot at 84th St and Hwy 2", LocationId = 11 }
+		 new Depot { Id = 1, Name = "Seward Depot", LocationId = 1 },
+		 new Depot { Id = 2, Name = "Pawnee Lake Depot", LocationId = 2 },
+		 new Depot { Id = 3, Name = "Lincoln Northwest Depot", LocationId = 3 },
+		 new Depot { Id = 4, Name = "Waverly Depot", LocationId = 4 },
+		 new Depot { Id = 5, Name = "Greenwood Depot", LocationId = 5 },
+		 new Depot { Id = 6, Name = "Melia Depot", LocationId = 6 },
+		 new Depot { Id = 7, Name = "Millard Depot", LocationId = 7 },
+		 new Depot { Id = 8, Name = "Omaha Depot", LocationId = 8 },
+		 new Depot { Id = 9, Name = "Depot at 27th and O St", LocationId = 9 },
+		 new Depot { Id = 10, Name = "Depot at 84th and O St", LocationId = 10 },
+		 new Depot { Id = 11, Name = "Depot at 84th St and Hwy 2", LocationId = 11 }
 
 		);
 		modelBuilder.Entity<Location>().HasData(

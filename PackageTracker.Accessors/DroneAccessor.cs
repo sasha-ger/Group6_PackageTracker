@@ -46,6 +46,14 @@ public class DroneAccessor : IDroneAccessor
         await _db.SaveChangesAsync();
     }
 
+    public async Task<Drone?> GetByCurrentPackageId(int packageId)
+    {
+        return await _db.Drones
+            .Include(d => d.CurrentDepot)
+            .Include(d => d.HomeDepot)
+            .FirstOrDefaultAsync(d => d.CurrentPackageId == packageId);
+    }
+
     public async Task UpdateDrone(Drone drone)
     {
         _db.Drones.Update(drone);

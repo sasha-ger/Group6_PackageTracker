@@ -107,7 +107,7 @@ public class RequestEngineTests
         _mockRoutingEngine.Setup(r => r.IsWithinRange(It.IsAny<double>(), It.IsAny<double>())).ReturnsAsync(false);
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _engine.ProcessDeliveryRequest(1, "Origin", 99.0, -99.0, "Dest", 88.0, -88.0, 1.0, "Jane"));
+            _engine.ProcessDeliveryRequest(1, "Origin", 99.0, -99.0, "Dest", 88.0, -88.0, "Jane"));
     }
 
     [Fact]
@@ -122,7 +122,7 @@ public class RequestEngineTests
         _mockDroneAccessor.Setup(a => a.GetAvailableAtDepot(1)).ReturnsAsync(new List<Drone>());
 
         await Assert.ThrowsAsync<Exception>(() =>
-            _engine.ProcessDeliveryRequest(1, "123 Origin St", 40.0, -75.0, "456 Dest Ave", 40.1, -75.1, 1.0, "Jane"));
+            _engine.ProcessDeliveryRequest(1, "123 Origin St", 40.0, -75.0, "456 Dest Ave", 40.1, -75.1, "Jane"));
     }
 
     [Fact]
@@ -141,7 +141,7 @@ public class RequestEngineTests
         _mockDroneAccessor.Setup(a => a.UpdateDrone(It.IsAny<Drone>())).Returns(Task.CompletedTask);
         _mockEventAccessor.Setup(a => a.Create(It.IsAny<PackageStatusEvent>())).Returns(Task.CompletedTask);
 
-        await _engine.ProcessDeliveryRequest(1, "123 Origin St", 40.0, -75.0, "456 Dest Ave", 40.1, -75.1, 1.0, "Jane");
+        await _engine.ProcessDeliveryRequest(1, "123 Origin St", 40.0, -75.0, "456 Dest Ave", 40.1, -75.1, "Jane");
 
         _mockPackageAccessor.Verify(a => a.Create(It.IsAny<Package>()), Times.Once);
         _mockDroneAccessor.Verify(a => a.UpdateDrone(It.IsAny<Drone>()), Times.Once);
@@ -165,7 +165,7 @@ public class RequestEngineTests
         _mockDroneAccessor.Setup(a => a.UpdateDrone(It.IsAny<Drone>())).Returns(Task.CompletedTask);
         _mockEventAccessor.Setup(a => a.Create(It.IsAny<PackageStatusEvent>())).Returns(Task.CompletedTask);
 
-        await _engine.ProcessDeliveryRequest(1, "New Origin", 40.0, -75.0, "New Dest", 40.1, -75.1, 1.0, "Jane");
+        await _engine.ProcessDeliveryRequest(1, "New Origin", 40.0, -75.0, "New Dest", 40.1, -75.1, "Jane");
 
         // Create called once for each location (origin + destination)
         _mockLocationAccessor.Verify(a => a.Create(It.IsAny<Location>()), Times.Exactly(2));

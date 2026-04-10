@@ -21,6 +21,11 @@ public class StaffTrackingEngine(IDroneAccessor droneAccessor, IPackageAccessor 
         return await packageAccessor.GetById(drone.CurrentPackageId.Value);
     }
 
+    public async Task<Drone?> GetDroneByPackage(int packageId)
+    {
+        return await droneAccessor.GetByCurrentPackageId(packageId);
+    }
+
     public async Task<List<Package>> GetAllActivePackages()
     {
         return await packageAccessor.GetAllActive();

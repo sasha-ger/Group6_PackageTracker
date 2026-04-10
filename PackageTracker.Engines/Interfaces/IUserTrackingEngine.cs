@@ -7,4 +7,5 @@ public interface IUserTrackingEngine
     Task<string> GetPackageStatus(int packageId);
     Task<string> GetPackageDetails(int packageId);
     string BuildStatusString(Package package);
+    Task<List<Package>> GetPackagesByCustomer(int userId);
 }

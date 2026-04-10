@@ -7,4 +7,5 @@ public interface IStaffTrackingEngine
     Task<List<Drone>> GetAllDroneStatuses();
     Task<Package?> GetPackageAssignedToDrone(int droneId);
     Task<List<Package>> GetAllActivePackages();
+    Task<Drone?> GetDroneByPackage(int packageId);
 }

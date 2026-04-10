@@ -32,6 +32,12 @@ public class UserTrackingEngine(IPackageAccessor packageAccessor) : IUserTrackin
                $"Last Updated: {(package.UpdatedAt.HasValue ? package.UpdatedAt.Value.ToString("g") : "N/A")}";
     }
 
+    // Returns all packages sent by the given customer ID.
+    public async Task<List<Package>> GetPackagesByCustomer(int userId)
+    {
+        return await packageAccessor.GetBySenderId(userId);
+    }
+
     // Converts a Package's status enum into a customer-facing sentence.
     // Used by GetPackageStatus and can be called directly when a Package object is already in scope.
     public string BuildStatusString(Package package)

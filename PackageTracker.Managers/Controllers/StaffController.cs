@@ -1,32 +1,44 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PackageTracker.Engines;
 using PackageTracker.Managers.Interfaces;
 
 namespace PackageTracker.Managers.Controllers;
 
+[Authorize(Roles = "Staff")]
 [ApiController]
 [Route("api/staff")]
 public class StaffController(IStaffTrackingEngine staffTrackingEngine)
     : ControllerBase, IStaffManager
 {
     // GET api/staff/drones
+    // Returns all drones with their current status and depot location.
     [HttpGet("drones")]
-    public Task<IActionResult> GetAllDrones()
+    public async Task<IActionResult> GetAllDrones()
     {
-        throw new NotImplementedException();
+        var drones = await staffTrackingEngine.GetAllDroneStatuses();
+        return Ok(drones);
     }
 
     // GET api/staff/drones/by-package/{packageId}
+    // Returns the drone currently carrying a given package, or 404 if none.
     [HttpGet("drones/by-package/{packageId}")]
-    public Task<IActionResult> GetDroneByPackage(int packageId)
+    public async Task<IActionResult> GetDroneByPackage(int packageId)
     {
-        throw new NotImplementedException();
+        var drone = await staffTrackingEngine.GetDroneByPackage(packageId);
+
+        if (drone == null)
+            return NotFound($"No drone is currently assigned to package {packageId}.");
+
+        return Ok(drone);
     }
 
     // GET api/staff/packages/active
+    // Returns all packages that have not yet been delivered or failed.
     [HttpGet("packages/active")]
-    public Task<IActionResult> GetAllActivePackages()
+    public async Task<IActionResult> GetAllActivePackages()
     {
-        throw new NotImplementedException();
+        var packages = await staffTrackingEngine.GetAllActivePackages();
+        return Ok(packages);
     }
 }

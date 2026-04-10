@@ -1,18 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
+using PackageTracker.Managers.Dtos;
 
 namespace PackageTracker.Managers.Interfaces;
 
 public interface IAuthManager
 {
     // Validates credentials and returns a JWT token on success
-    Task<IActionResult> Login(string email, string password);
+    Task<IActionResult> Login(LoginRequestDto request);
 
-    // Invalidates the given JWT token and ends the session
-    Task<IActionResult> Logout(string token);
+    // Ends the session — client should discard the token
+    IActionResult Logout();
 
-    // Returns the role (customer or staff) encoded in the token
-    IActionResult GetUserRole(string token);
+    // Returns the role (customer or staff) encoded in the token — no DB lookup
+    IActionResult GetUserRole();
 
-    // Checks that the token is valid and not expired
-    IActionResult ValidateToken(string token);
+    // Checks that the token in the Authorization header is valid and not expired
+    IActionResult ValidateToken();
 }

@@ -23,6 +23,7 @@
     <ProjectReference Include="..\PackageTracker.Engines\PackageTracker.Engines.csproj" />
     <ProjectReference Include="..\PackageTracker.Accessors\PackageTracker.Accessors.csproj" />
     <ProjectReference Include="..\PackageTracker.Models\PackageTracker.Models.csproj" />
+    <ProjectReference Include="..\PackageTracker.Managers\PackageTracker.Managers.csproj" />
   </ItemGroup>
 
 </Project>

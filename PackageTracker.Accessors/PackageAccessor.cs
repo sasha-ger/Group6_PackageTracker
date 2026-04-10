@@ -37,6 +37,11 @@ public class PackageAccessor : IPackageAccessor
         return package;
     }
 
+    public async Task<List<Package>> GetBySenderId(int senderId)
+    {
+        return await _db.Packages.Where(p => p.SenderId == senderId).ToListAsync();
+    }
+
     public async Task UpdateStatus(int id, PackageStatus status)
     {
         var package = await _db.Packages.FindAsync(id) ?? throw new Exception("Package not found");

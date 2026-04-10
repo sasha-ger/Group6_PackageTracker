@@ -11,4 +11,5 @@ public interface IDroneAccessor
     Task UpdateStatus(int id, DroneStatus status);
     Task UpdateCurrentDepot(int id, int? depotId);
     Task UpdateDrone(Drone drone);
+    Task<Drone?> GetByCurrentPackageId(int packageId);
 }
