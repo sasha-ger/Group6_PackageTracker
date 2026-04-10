@@ -10,6 +10,8 @@ public class AppDbContext : DbContext
 	public DbSet<Location> Locations { get; set; }
 	public DbSet<Package> Packages { get; set; }
 	public DbSet<User> Users { get; set; }
+	public DbSet<PackageStatusEvent> PackageStatusEvents { get; set; }
+
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -46,5 +48,33 @@ public class AppDbContext : DbContext
 			.HasForeignKey(d => d.CurrentDepotId)
 			.IsRequired(false)
 			.OnDelete(DeleteBehavior.Restrict);
+		
+		modelBuilder.Entity<Drone>()
+			.HasOne(d => d.CurrentPackage)
+			.WithMany()
+			.HasForeignKey(d => d.CurrentPackageId)
+			.IsRequired(false)
+			.OnDelete(DeleteBehavior.Restrict);
+
+		modelBuilder.Entity<Drone>()
+			.HasOne(d => d.DestinationDepot)
+			.WithMany()
+			.HasForeignKey(d => d.DestinationDepotId)
+			.IsRequired(false)
+			.OnDelete(DeleteBehavior.Restrict);
+
+		modelBuilder.Entity<PackageStatusEvent>()
+			.HasOne(e => e.Package)
+			.WithMany()
+			.HasForeignKey(e => e.PackageId)
+			.OnDelete(DeleteBehavior.Cascade);
+
+		modelBuilder.Entity<PackageStatusEvent>()
+			.HasOne(e => e.Depot)
+			.WithMany()
+			.HasForeignKey(e => e.DepotId)
+			.IsRequired(false)
+			.OnDelete(DeleteBehavior.Restrict);
+
 	}
 }

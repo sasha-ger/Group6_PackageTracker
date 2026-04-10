@@ -45,4 +45,10 @@ public class DroneAccessor : IDroneAccessor
         drone.CurrentDepotId = depotId;
         await _db.SaveChangesAsync();
     }
+
+    public async Task UpdateDrone(Drone drone)
+    {
+        _db.Drones.Update(drone);
+        await _db.SaveChangesAsync();
+    }
 }

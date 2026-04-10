@@ -1,8 +1,9 @@
 namespace PackageTracker.Engines;
+using PackageTracker.Models;
 
 public interface IRequestEngine
 {
-    Task ProcessDeliveryRequest(int customerId, string origin, string destination, double weight);
-    Task<bool> ValidateDeliveryLocations(string origin, string destination);
-    Task DispatchDrone(int depotId, int packageId);
+    Task ProcessDeliveryRequest(int customerId, string originAddress, double originLat, double originLng, string destinationAddress, double destinationLat, double destinationLng, double weight, string recipient);
+    Task<bool> ValidateDeliveryLocations(double originLat, double originLng, double destinationLat, double destinationLng);
+    Task DispatchDrone(int droneId, int packageId, DateTime estimatedArrivalTime);
 }

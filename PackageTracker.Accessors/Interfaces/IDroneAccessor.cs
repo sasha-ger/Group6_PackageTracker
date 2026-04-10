@@ -10,4 +10,5 @@ public interface IDroneAccessor
     Task<List<Drone>> GetAvailableAtDepot(int depotId);
     Task UpdateStatus(int id, DroneStatus status);
     Task UpdateCurrentDepot(int id, int? depotId);
+    Task UpdateDrone(Drone drone);
 }

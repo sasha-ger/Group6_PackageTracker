@@ -6,9 +6,9 @@ using PackageTracker.Engines;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//
-// Dependency Injection
-//
+////
+//// Dependency Injection
+////
 
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -21,6 +21,7 @@ builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 builder.Services.AddScoped<IDroneAccessor, DroneAccessor>();
 builder.Services.AddScoped<IDepotAccessor, DepotAccessor>();
 builder.Services.AddScoped<ILocationAccessor, LocationAccessor>();
+builder.Services.AddScoped<IPackageStatusEventAccessor, PackageStatusEventAccessor>();
 
 // Engines
 builder.Services.AddScoped<IRequestEngine, RequestEngine>();
