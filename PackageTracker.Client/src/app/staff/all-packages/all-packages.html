@@ -1,1 +1,81 @@
-<p>all-packages works!</p>
+<div class="packages-page">
+    <div class="page-header">
+      <h1>All Packages</h1>
+      <p>View and filter every package in the system</p>
+    </div>
+  
+    <div class="summary-row">
+      <div class="summary-card">
+        <span class="summary-label">Total</span>
+        <span class="summary-number">{{ totalCount }}</span>
+      </div>
+      <div class="summary-card blue">
+        <span class="summary-label">In Transit</span>
+        <span class="summary-number">{{ inTransitCount }}</span>
+      </div>
+      <div class="summary-card green">
+        <span class="summary-label">Delivered</span>
+        <span class="summary-number">{{ deliveredCount }}</span>
+      </div>
+      <div class="summary-card amber">
+        <span class="summary-label">Pending</span>
+        <span class="summary-number">{{ pendingCount }}</span>
+      </div>
+    </div>
+  
+    <div class="filters">
+      <input
+        type="text"
+        placeholder="Search by ID, origin or destination..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilter()"
+        class="search-input"
+      />
+      <div class="status-filters">
+        @for (s of statuses; track s) {
+          <button
+            class="filter-btn"
+            [class.active]="selectedStatus === s"
+            (click)="selectedStatus = s; applyFilter()">
+            {{ s }}
+          </button>
+        }
+      </div>
+    </div>
+  
+    <div class="packages-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Package ID</th>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Status</th>
+            <th>Weight</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of filtered; track p.packageId) {
+            <tr>
+              <td><span class="pkg-id">#{{ p.packageId }}</span></td>
+              <td>{{ p.origin }}</td>
+              <td>{{ p.destination }}</td>
+              <td>
+                <span class="badge" [ngClass]="p.status.toLowerCase()">
+                  {{ p.status }}
+                </span>
+              </td>
+              <td>{{ p.weight }} kg</td>
+              <td>{{ p.createdAt | date:'MMM d, y' }}</td>
+            </tr>
+          }
+          @if (filtered.length === 0) {
+            <tr>
+              <td colspan="6" class="empty">No packages found</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
