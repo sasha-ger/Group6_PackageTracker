@@ -1,37 +1,27 @@
-<!-- <div class="tracking-container">
-  <h2>Track Your Package</h2>
+<div class="tracking-wrapper">
+  <div class="tracking-card">
+    <h2>Tracking Package #{{ packageId }}</h2>
+    <p class="subtitle">Live status and latest updates</p>
 
-  <div class="input-row">
-    <input
-      type="number"
-      [(ngModel)]="packageId"
-      placeholder="Enter Package ID"
-    />
-    <button (click)="track()">Track</button>
-  </div>
+    <p class="error" *ngIf="error">{{ error }}</p>
 
-  <p class="error" *ngIf="error">{{ error }}</p>
+    <div *ngIf="status" class="status-box">
+      <div class="status-row">
+        <span class="label">Status</span>
+        <span class="value">{{ status.status }}</span>
+      </div>
 
-  <div class="status-card" *ngIf="status">
-    <h3>Status: {{ status.status }}</h3>
+      <div class="status-row">
+        <span class="label">Current Depot</span>
+        <span class="value">{{ status.currentDepotId || '—' }}</span>
+      </div>
 
-    <p><strong>Package ID:</strong> {{ status.packageId }}</p>
-    <p><strong>Current Depot:</strong> {{ status.currentDepotId }}</p>
-    <p><strong>Last Updated:</strong> {{ status.timestamp }}</p>
-  </div>
-</div> -->
-<div class="tracking-container">
-  <h2>Tracking Package #{{ packageId }}</h2>
+      <div class="status-row">
+        <span class="label">Last Updated</span>
+        <span class="value">{{ status.timestamp || '—' }}</span>
+      </div>
+    </div>
 
-  <p class="error" *ngIf="error">{{ error }}</p>
-
-  <div class="status-card" *ngIf="status">
-    <h3>Status: {{ status.status }}</h3>
-
-    <p><strong>Package ID:</strong> {{ status.packageId }}</p>
-    <p><strong>Current Depot:</strong> {{ status.currentDepotId }}</p>
-    <p><strong>Last Updated:</strong> {{ status.timestamp }}</p>
+    <button class="back-btn" (click)="goBack()">Back to My Deliveries</button>
   </div>
 </div>
-
-

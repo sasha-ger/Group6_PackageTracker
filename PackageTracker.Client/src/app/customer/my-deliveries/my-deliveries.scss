@@ -1,46 +1,114 @@
-.my-deliveries-container {
-  max-width: 600px;
-  margin: 60px auto;
-  padding: 25px;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.deliveries-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 1rem;
+  background: var(--bg);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.deliveries-card {
+  width: 100%;
+  max-width: 700px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
 
   h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 600;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
   }
 
-  .error {
-    color: #d9534f;
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 14px;
+  .subtitle {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+}
+
+.request-btn {
+  padding: 0.7rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: background 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 4px 12px rgba(230, 57, 70, 0.35);
+  }
+}
+
+.error {
+  color: var(--primary);
+  font-size: 0.78rem;
+  margin-bottom: 1rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--danger-light);
+  border-radius: 8px;
+}
+
+.empty {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding: 1rem 0;
+}
+
+.delivery-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.delivery-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
   }
 
-  .empty {
-    text-align: center;
-    padding: 20px;
-    color: #666;
-    font-size: 15px;
-  }
+  p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0.2rem 0;
 
-  .delivery-card {
-    background: #f7f9fc;
-    border: 1px solid #e1e5ea;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 15px;
-
-    h3 {
-      margin-bottom: 10px;
-      font-weight: 600;
+    strong {
+      color: var(--text-primary);
     }
+  }
 
-    p {
-      margin: 4px 0;
-      font-size: 15px;
+  .track-btn {
+    margin-top: 0.75rem;
+    padding: 0.6rem 1rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: var(--primary-dark);
     }
   }
 }

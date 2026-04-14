@@ -21,7 +21,6 @@ export class TrackingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // ⭐ Read ?packageId=1 from the URL
     this.packageId = Number(this.route.snapshot.queryParamMap.get('packageId'));
 
     if (!this.packageId) {
@@ -29,7 +28,6 @@ export class TrackingComponent implements OnInit {
       return;
     }
 
-    // ⭐ Load the status for that package
     this.packageEvents.getPackageStatus(this.packageId).subscribe({
       next: (result: any) => {
         this.status = result;
@@ -39,16 +37,8 @@ export class TrackingComponent implements OnInit {
       }
     });
   }
+
+  goBack() {
+    window.location.href = '/customer/my-deliveries';
+  }
 }
-
-
-
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-tracking',
-//   imports: [],
-//   templateUrl: './tracking.html',
-//   styleUrl: './tracking.scss',
-// })
-// export class Tracking {}
