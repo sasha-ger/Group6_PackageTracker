@@ -9,17 +9,16 @@
   border-bottom: 1px solid var(--border);
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
+}
 
-  h1 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-
-  p {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-  }
+.back-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1rem;
 }
 
 .card {
@@ -29,52 +28,53 @@
   padding: 1.75rem;
 }
 
-.error {
-  color: var(--primary);
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-  padding: 0.6rem 0.75rem;
-  background: var(--danger-light);
-  border-radius: 8px;
-}
-
-.status-box {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
-}
-
-.status-row {
+.tracking-header {
   display: flex;
   justify-content: space-between;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid var(--border);
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  .label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-  }
-
-  .value {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.btn {
+.badge {
+  background: var(--primary);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.section-title {
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+  color: var(--text-primary);
+}
+
+p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.error {
+  background: var(--danger-light);
+  padding: 0.6rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.back-btn {
   background: var(--primary);
   color: white;
   border: none;
   border-radius: 10px;
-  padding: 0.8rem 1.5rem;
+  padding: 0.75rem 1.25rem;
   font-weight: 600;
   font-family: 'Inter', sans-serif;
   cursor: pointer;
+  margin-bottom: 1.25rem;
+  transition: background 0.15s ease;
 }
+
+.back-btn:hover {
+  background: var(--primary-dark);
+}
+

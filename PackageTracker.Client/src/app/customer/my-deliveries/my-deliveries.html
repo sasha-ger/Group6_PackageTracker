@@ -1,44 +1,36 @@
 <div class="page">
   <div class="page-header">
     <h1>My Deliveries</h1>
-    <p>View the status of your active and past packages.</p>
+    <p>Your active and past package deliveries.</p>
   </div>
 
-  <div class="card">
-<button class="request-btn" (click)="goToRequest()">
-  Request a Delivery
-</button>
+  <button class="request-btn" (click)="goToRequest()">
+    Request a Delivery
+  </button>
 
+  <div class="delivery-list">
 
-    @if (error) {
-      <p class="error">{{ error }}</p>
-    }
-
-    @if (!error && deliveries.length === 0) {
+    @if (packages.length === 0) {
       <p class="empty">You have no deliveries yet.</p>
     }
 
-    @if (!error && deliveries.length > 0) {
-      <div class="delivery-list">
-        @for (d of deliveries; track d.packageId) {
-          <div class="delivery-item">
-            <div class="delivery-header">
-              <h3>Package #{{ d.packageId }}</h3>
-              <span class="badge {{ d.status.toLowerCase() }}">
-                {{ d.status }}
-              </span>
-            </div>
+    @for (d of packages; track d.id) {
+      <div class="delivery-item">
 
-            <p><strong>Origin:</strong> {{ d.origin }}</p>
-            <p><strong>Destination:</strong> {{ d.destination }}</p>
-            <p><strong>Current Depot:</strong> {{ getDepotName(d.currentDepotId) }}</p>
-            <p><strong>Created:</strong> {{ d.createdAt | date:'short' }}</p>
+        <div class="delivery-header">
+          <h3>Package #{{ d.id }}</h3>
+          <span class="badge">{{ d.status }}</span>
+        </div>
 
-            <button class="btn secondary" (click)="track(d.packageId)">
-              Track
-            </button>
-          </div>
-        }
+        <p><strong>Tracking #:</strong> {{ d.trackingNumber }}</p>
+        <p><strong>Origin:</strong> {{ d.originLocation.address }}</p>
+        <p><strong>Destination:</strong> {{ d.destinationLocation.address }}</p>
+        <p><strong>Current Depot:</strong> {{ d.currentDepotName }}</p>
+        <p><strong>Created:</strong> {{ d.createdAt | date:'short' }}</p>
+
+        <button class="btn secondary" (click)="track(d.id)">
+          Track
+        </button>
       </div>
     }
   </div>

@@ -1,10 +1,11 @@
 <div class="page">
   <div class="page-header">
     <h1>Request a Delivery</h1>
-    <p>Create a new delivery from a depot to a destination address.</p>
+    <p>Create a new delivery by entering pickup and destination coordinates.</p>
   </div>
 
   <div class="card">
+
     @if (error) {
       <p class="error">{{ error }}</p>
     }
@@ -13,24 +14,49 @@
       <p class="success">{{ success }}</p>
     }
 
+    <!-- PICKUP -->
+    <div class="section-title">Pickup Location</div>
+
     <div class="form-group">
-      <label>Pickup Depot</label>
-      <select class="input" [(ngModel)]="pickupDepotId">
-        <option [ngValue]="null" disabled selected>Select a depot</option>
-        @for (id of depotIds; track id) {
-          <option [ngValue]="id">{{ depotMap[id] }}</option>
-        }
-      </select>
+      <label>Pickup Address</label>
+      <input class="input" [(ngModel)]="pickup.address" placeholder="123 Main St" />
     </div>
+
+    <div class="form-row">
+      <div class="form-group half">
+        <label>Pickup Latitude</label>
+        <input class="input" type="number" [(ngModel)]="pickup.latitude" />
+      </div>
+
+      <div class="form-group half">
+        <label>Pickup Longitude</label>
+        <input class="input" type="number" [(ngModel)]="pickup.longitude" />
+      </div>
+    </div>
+
+    <!-- DESTINATION -->
+    <div class="section-title">Destination Location</div>
 
     <div class="form-group">
       <label>Destination Address</label>
-      <input
-        class="input"
-        type="text"
-        [(ngModel)]="destinationAddress"
-        placeholder="123 Main St, Lincoln NE"
-      />
+      <input class="input" [(ngModel)]="destination.address" placeholder="500 Vine St" />
+    </div>
+
+    <div class="form-row">
+      <div class="form-group half">
+        <label>Destination Latitude</label>
+        <input class="input" type="number" [(ngModel)]="destination.latitude" />
+      </div>
+
+      <div class="form-group half">
+        <label>Destination Longitude</label>
+        <input class="input" type="number" [(ngModel)]="destination.longitude" />
+      </div>
+    </div>
+
+    <!-- CLOSEST DEPOT -->
+    <div class="closest-box" *ngIf="closestDepot">
+      <p><strong>Closest Depot:</strong> {{ closestDepot.name }}</p>
     </div>
 
     <button class="btn" (click)="submitRequest()">Submit Request</button>
