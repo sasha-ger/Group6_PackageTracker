@@ -1,1 +1,50 @@
-<p>drone-tracker works!</p>
+<div class="tracker-page">
+    <div class="page-header">
+      <h1>Drone Tracker</h1>
+      <p>Live status of all SUAS in the network</p>
+    </div>
+  
+    <div class="summary-row">
+      <div class="summary-card">
+        <span class="summary-label">Total</span>
+        <span class="summary-number">{{ suas.length }}</span>
+      </div>
+      <div class="summary-card green">
+        <span class="summary-label">Idle</span>
+        <span class="summary-number">{{ idleCount }}</span>
+      </div>
+      <div class="summary-card red">
+        <span class="summary-label">Active</span>
+        <span class="summary-number">{{ activeCount }}</span>
+      </div>
+    </div>
+  
+    <div class="drone-grid">
+      @for (s of suas; track s.suasId) {
+        <div class="drone-card" [class.selected]="selectedSuas?.suasId === s.suasId" (click)="selectSuas(s)">
+          <div class="drone-header">
+            <div class="drone-id">SUAS-{{ s.suasId }}</div>
+            <span class="badge" [ngClass]="s.status.toLowerCase()">{{ s.status }}</span>
+          </div>
+          <div class="drone-detail">
+            <span class="detail-label">Location</span>
+            <span class="detail-value">{{ getDepotName(s.currentDepotId) }}</span>
+          </div>
+          <div class="drone-detail">
+            <span class="detail-label">Range</span>
+            <span class="detail-value">{{ s.rangeKm }} km</span>
+          </div>
+          <div class="drone-detail">
+            <span class="detail-label">Package</span>
+            <span class="detail-value">
+              @if (s.packageOnBoard) {
+                <span class="has-package">#{{ s.packageOnBoard }}</span>
+              } @else {
+                <span class="no-package">Empty</span>
+              }
+            </span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>

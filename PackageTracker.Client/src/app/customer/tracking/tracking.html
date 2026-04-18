@@ -1,37 +1,36 @@
-<!-- <div class="tracking-container">
-  <h2>Track Your Package</h2>
-
-  <div class="input-row">
-    <input
-      type="number"
-      [(ngModel)]="packageId"
-      placeholder="Enter Package ID"
-    />
-    <button (click)="track()">Track</button>
+<div class="page">
+  <div class="page-header">
+    <h1>Track Package</h1>
+    <p>View the latest status and delivery progress.</p>
   </div>
 
-  <p class="error" *ngIf="error">{{ error }}</p>
+<button class="back-btn" (click)="goBack()">
+  ← Back to My Deliveries
+</button>
 
-  <div class="status-card" *ngIf="status">
-    <h3>Status: {{ status.status }}</h3>
 
-    <p><strong>Package ID:</strong> {{ status.packageId }}</p>
-    <p><strong>Current Depot:</strong> {{ status.currentDepotId }}</p>
-    <p><strong>Last Updated:</strong> {{ status.timestamp }}</p>
-  </div>
-</div> -->
-<div class="tracking-container">
-  <h2>Tracking Package #{{ packageId }}</h2>
+  <div class="card">
 
-  <p class="error" *ngIf="error">{{ error }}</p>
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
 
-  <div class="status-card" *ngIf="status">
-    <h3>Status: {{ status.status }}</h3>
+    @if (pkg) {
 
-    <p><strong>Package ID:</strong> {{ status.packageId }}</p>
-    <p><strong>Current Depot:</strong> {{ status.currentDepotId }}</p>
-    <p><strong>Last Updated:</strong> {{ status.timestamp }}</p>
+      <div class="tracking-header">
+        <h2>Tracking #{{ pkg.trackingNumber }}</h2>
+        <span class="badge">{{ pkg.status }}</span>
+      </div>
+
+      <p><strong>Origin:</strong> {{ pkg.originLocation.address }}</p>
+      <p><strong>Destination:</strong> {{ pkg.destinationLocation.address }}</p>
+
+      <div class="section-title">Latest Event</div>
+
+      <p><strong>Event:</strong> {{ lastEvent.eventType }}</p>
+      <p><strong>Depot:</strong> {{ lastEvent.depotName }}</p>
+      <p><strong>Updated:</strong> {{ pkg.updatedAt | date:'short' }}</p>
+
+    }
   </div>
 </div>
-
-

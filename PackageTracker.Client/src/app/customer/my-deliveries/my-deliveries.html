@@ -1,22 +1,37 @@
-<div class="my-deliveries-container">
-  <h2>My Deliveries</h2>
-  <button (click)="goToRequest()">Request a Delivery</button>
-
-  <p class="error" *ngIf="error">{{ error }}</p>
-
-  <div *ngIf="deliveries.length === 0 && !error" class="empty">
-    <p>You have no deliveries yet.</p>
+<div class="page">
+  <div class="page-header">
+    <h1>My Deliveries</h1>
+    <p>Your active and past package deliveries.</p>
   </div>
 
-  <div *ngFor="let d of deliveries" class="delivery-card">
-    <h3>Package #{{ d.packageId }}</h3>
+  <button class="request-btn" (click)="goToRequest()">
+    Request a Delivery
+  </button>
 
-    <p><strong>Status:</strong> {{ d.status }}</p>
-    <p><strong>Current Depot:</strong> {{ d.currentDepotId }}</p>
-    <p><strong>Last Updated:</strong> {{ d.timestamp }}</p>
+  <div class="delivery-list">
 
-     <button (click)="track(d.packageId)">Track</button>
+    @if (packages.length === 0) {
+      <p class="empty">You have no deliveries yet.</p>
+    }
+
+    @for (d of packages; track d.id) {
+      <div class="delivery-item">
+
+        <div class="delivery-header">
+          <h3>Package #{{ d.id }}</h3>
+          <span class="badge">{{ d.status }}</span>
+        </div>
+
+        <p><strong>Tracking #:</strong> {{ d.trackingNumber }}</p>
+        <p><strong>Origin:</strong> {{ d.originLocation.address }}</p>
+        <p><strong>Destination:</strong> {{ d.destinationLocation.address }}</p>
+        <p><strong>Current Depot:</strong> {{ d.currentDepotName }}</p>
+        <p><strong>Created:</strong> {{ d.createdAt | date:'short' }}</p>
+
+        <button class="btn secondary" (click)="track(d.id)">
+          Track
+        </button>
+      </div>
+    }
   </div>
 </div>
-
-

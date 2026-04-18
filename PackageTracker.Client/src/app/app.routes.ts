@@ -11,7 +11,7 @@ const routes: Routes = [
           import('./customer/login/login').then(m => m.LoginComponent)
       },
       {
-        path: 'tracking',
+        path: 'tracking/:id',
         loadComponent: () =>
           import('./customer/tracking/tracking').then(m => m.TrackingComponent)
       },

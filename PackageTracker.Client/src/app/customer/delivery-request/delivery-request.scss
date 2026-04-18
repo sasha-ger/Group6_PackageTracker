@@ -1,78 +1,80 @@
-.delivery-request-container {
-  max-width: 450px;
-  margin: 60px auto;
-  padding: 25px;
-  background: #ffffff;
+.page {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.page-header {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.75rem;
+}
+
+.section-title {
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+  color: var(--text-primary);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.half {
+  flex: 1;
+}
+
+.input {
+  border: 1.5px solid var(--border);
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0.7rem 0.9rem;
+  background: var(--bg);
+}
 
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 600;
-  }
+.btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+}
 
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.closest-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+}
 
-    label {
-      font-size: 14px;
-      font-weight: 500;
-    }
+.error {
+  background: var(--danger-light);
+  padding: 0.6rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
 
-    input {
-      padding: 10px 12px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-
-      &:focus {
-        outline: none;
-        border-color: #0078d4;
-        box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
-      }
-    }
-
-    button {
-      padding: 10px;
-      background: #0078d4;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.2s;
-
-      &:hover {
-        background: #005fa3;
-      }
-    }
-  }
-
-  .error {
-    margin-top: 10px;
-    color: #d9534f;
-    text-align: center;
-    font-size: 14px;
-  }
-
-  .success {
-    margin-top: 20px;
-    padding: 20px;
-    background: #f7f9fc;
-    border-radius: 8px;
-    border: 1px solid #e1e5ea;
-    text-align: center;
-
-    h3 {
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-
-    p {
-      font-size: 15px;
-    }
-  }
+.success {
+  background: var(--success-light);
+  padding: 0.6rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
 }
