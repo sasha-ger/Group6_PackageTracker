@@ -49,4 +49,14 @@ public class PackageAccessor : IPackageAccessor
         package.UpdatedAt = DateTime.UtcNow;
         await _db.SaveChangesAsync();
     }
+
+    public async Task<List<Package>> GetActivePackagesWithLocations()
+    {
+        return await _db.Packages
+            .Include(p => p.OriginLocation)
+            .Include(p => p.DestinationLocation)
+            .Where(p => p.Status == PackageStatus.Pending || p.Status == PackageStatus.InTransit)
+            .ToListAsync();
+    }
+
 }

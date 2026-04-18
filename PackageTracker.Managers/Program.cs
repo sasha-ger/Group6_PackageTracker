@@ -6,6 +6,7 @@ using PackageTracker.Accessors;
 using PackageTracker.Accessors.Data;
 using PackageTracker.Accessors.Interfaces;
 using PackageTracker.Engines;
+using PackageTracker.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,8 @@ builder.Services.AddScoped<IRequestEngine, RequestEngine>();
 builder.Services.AddScoped<IRoutingEngine, RoutingEngine>();
 builder.Services.AddScoped<IUserTrackingEngine, UserTrackingEngine>();
 builder.Services.AddScoped<IStaffTrackingEngine, StaffTrackingEngine>();
+builder.Services.AddScoped<ISimulationEngine, SimulationEngine>();
+builder.Services.AddHostedService<SimulationBackgroundService>();
 
 // JWT Authentication
 var jwtSecret = builder.Configuration["Jwt:Secret"] ?? throw new InvalidOperationException("JWT secret is not configured.");

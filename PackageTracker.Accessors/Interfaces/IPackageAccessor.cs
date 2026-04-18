@@ -11,4 +11,5 @@ public interface IPackageAccessor
     Task<List<Package>> GetBySenderId(int senderId);
     Task<Package> Create(Package package);
     Task UpdateStatus(int id, PackageStatus status);
+    Task<List<Package>> GetActivePackagesWithLocations();
 }
