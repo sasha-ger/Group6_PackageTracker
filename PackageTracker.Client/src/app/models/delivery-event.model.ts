@@ -1,30 +1,12 @@
-// ─────────────────────────────────────────────
-// src/app/models/delivery-event.model.ts
-// ─────────────────────────────────────────────
-
-export interface DeliveryEvent {
-  packageId: number;
-  status: string;
-  lastUpdated: Date;
-  location: string;
+export interface PackageEvent {
+  eventType: PackageEventType;
+  timestamp: string;
+  depotId: number | null;
+  depotName: string | null;
 }
 
-// export interface DeliveryEvent {
-//     eventId: number;
-//     packageId: number;
-//     eventType: DeliveryEventType;
-//     timestamp: Date;
-//     location: string;
-//     suasId?: number;
-//     depotId?: number;
-//     notes?: string;
-//   }
-   
-//   export type DeliveryEventType =
-//     | 'CREATED'
-//     | 'SUAS_DISPATCHED'
-//     | 'PICKED_UP'
-//     | 'DEPOT_HANDOFF'
-//     | 'OUT_FOR_DELIVERY'
-//     | 'DELIVERED'
-//     | 'CANCELLED';
+export type PackageEventType =
+  | 'Dispatched'
+  | 'PickedUp'
+  | 'ArrivedAtDepot'
+  | 'Delivered';

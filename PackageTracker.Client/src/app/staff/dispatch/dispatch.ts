@@ -32,7 +32,7 @@ export class Dispatch implements OnInit {
   ngOnInit() {
     this.suasService.getAllSuas().subscribe(data => {
       // Only show idle drones for dispatch
-      this.suas = data.filter(s => s.status === 'IDLE');
+      this.suas = data.filter(s => s.status === 'Idle');
     });
 
     this.depotService.getAllDepots().subscribe(data => {
@@ -49,7 +49,7 @@ export class Dispatch implements OnInit {
   }
 
   onSuasSelect() {
-    const selected = this.suas.find(s => s.suasId === Number(this.selectedSuasId));
+    const selected = this.suas.find(s => s.id === Number(this.selectedSuasId));
     if (selected) {
       this.selectedFromDepotId = selected.currentDepotId;
     }

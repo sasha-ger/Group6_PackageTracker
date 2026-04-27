@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
+import { DeliveryService } from '../../core/services/delivery.service';
+import { Package, PackageEvent } from '../../models';
 
 @Component({
   selector: 'app-tracking',
@@ -9,69 +12,41 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './tracking.html',
   styleUrl: './tracking.scss',
 })
-export class TrackingComponent {
+export class TrackingComponent implements OnInit {
 
-  pkg: any = null;
-  lastEvent: any = null;
+  pkg: Package | null = null;
+  events: PackageEvent[] = [];
   error = '';
+  isLoading = true;
 
-  // Dummy backend-correct data
-  dummyPackages = [
-    {
-      id: 1,
-      trackingNumber: 'PKG-20240415-001',
-      status: 'Pending',
-      originLocation: { address: '123 Main St, Lincoln NE' },
-      destinationLocation: { address: '500 Vine St, Lincoln NE' },
-      updatedAt: new Date('2024-04-15T10:00:00'),
-      events: [
-        { eventType: 'Dispatched', depotName: 'Lincoln – O & 27th' }
-      ]
-    },
-    {
-      id: 2,
-      trackingNumber: 'PKG-20240415-002',
-      status: 'InTransit',
-      originLocation: { address: '84th & Hwy 2, Lincoln NE' },
-      destinationLocation: { address: '72nd & Dodge, Omaha NE' },
-      updatedAt: new Date('2024-04-15T11:20:00'),
-      events: [
-        { eventType: 'PickedUp', depotName: 'Lincoln – 84th & Hwy 2' },
-        { eventType: 'ArrivedAtDepot', depotName: 'Omaha – 72nd & Dodge' }
-      ]
-    },
-    {
-      id: 3,
-      trackingNumber: 'PKG-20240415-003',
-      status: 'Delivered',
-      originLocation: { address: 'Seward Depot' },
-      destinationLocation: { address: 'Grand Island Depot' },
-      updatedAt: new Date('2024-04-14T16:45:00'),
-      events: [
-        { eventType: 'Delivered', depotName: 'Grand Island Depot' }
-      ]
-    }
-  ];
-
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private deliveryService: DeliveryService
+  ) {}
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     if (!id) {
       this.error = 'No package ID provided.';
+      this.isLoading = false;
       return;
     }
 
-    const found = this.dummyPackages.find(p => p.id === id);
-
-    if (!found) {
-      this.error = 'Package not found.';
-      return;
-    }
-
-    this.pkg = found;
-    this.lastEvent = found.events[found.events.length - 1];
+    forkJoin({
+      pkg: this.deliveryService.getDeliveryById(id),
+      events: this.deliveryService.getPackageEvents(id)
+    }).subscribe({
+      next: ({ pkg, events }) => {
+        this.pkg = pkg;
+        this.events = events;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.error = 'Could not load tracking information.';
+        this.isLoading = false;
+      }
+    });
   }
 
   goBack() {

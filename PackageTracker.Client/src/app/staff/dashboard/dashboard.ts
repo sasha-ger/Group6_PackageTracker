@@ -40,8 +40,8 @@ export class DashboardComponent implements OnInit {
     this.suasService.getAllSuas().subscribe(data => {
       this.suas = data;
       this.totalDrones = data.length;
-      this.idleDrones = data.filter(s => s.status === 'IDLE').length;
-      this.activeDrones = data.filter(s => s.status !== 'IDLE').length;
+      this.idleDrones = data.filter(s => s.status === 'Idle').length;
+      this.activeDrones = data.filter(s => s.status !== 'Idle').length;
     });
 
     this.depotService.getAllDepots().subscribe(data => {

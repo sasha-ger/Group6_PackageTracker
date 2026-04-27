@@ -21,6 +21,7 @@ public class PackageStatusEventAccessor : IPackageStatusEventAccessor
     public async Task<List<PackageStatusEvent>> GetByPackageId(int packageId)
     {
         return await _db.PackageStatusEvents
+        .Include(e => e.Depot)
         .Where(e => e.PackageId == packageId)
         .OrderBy(e => e.Timestamp)
         .ToListAsync();

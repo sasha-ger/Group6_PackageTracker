@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PackageTracker.Accessors.Interfaces;
 using PackageTracker.Engines;
 using PackageTracker.Managers.Dtos;
 using PackageTracker.Managers.Interfaces;
@@ -9,7 +10,11 @@ namespace PackageTracker.Managers.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/customer")]
-public class CustomerController(IRequestEngine requestEngine, IUserTrackingEngine userTrackingEngine)
+public class CustomerController(
+    IRequestEngine requestEngine,
+    IUserTrackingEngine userTrackingEngine,
+    IPackageAccessor packageAccessor,
+    IPackageStatusEventAccessor eventAccessor)
     : ControllerBase, ICustomerManager
 {
     // POST api/customer/request
@@ -60,6 +65,33 @@ public class CustomerController(IRequestEngine requestEngine, IUserTrackingEngin
     {
         var packages = await userTrackingEngine.GetPackagesByCustomer(userId);
         return Ok(packages);
+    }
+
+    // GET api/customer/package/{packageId}
+    // Returns a single package by ID, including origin/destination locations.
+    [HttpGet("package/{packageId}")]
+    public async Task<IActionResult> GetPackageById(int packageId)
+    {
+        var package = await packageAccessor.GetById(packageId);
+        if (package == null)
+            return NotFound($"Package {packageId} not found.");
+        return Ok(package);
+    }
+
+    // GET api/customer/package/{packageId}/events
+    // Returns the full status-event history for a package, ordered by time.
+    [HttpGet("package/{packageId}/events")]
+    public async Task<IActionResult> GetPackageEvents(int packageId)
+    {
+        var events = await eventAccessor.GetByPackageId(packageId);
+        var dtos = events.Select(e => new PackageEventDto
+        {
+            EventType = e.EventType,
+            Timestamp = e.Timestamp,
+            DepotId = e.DepotId,
+            DepotName = e.Depot?.Name
+        });
+        return Ok(dtos);
     }
 
     // Reads the authenticated user's ID out of their JWT claims.

@@ -142,12 +142,14 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
   
-    &.idle            { background: #1a3a2a; color: #2ecc71; border: 1px solid #2ecc71; }
-    &.in_transit      { background: #1a2a3a; color: #3498db; border: 1px solid #3498db; }
-    &.en_route_depot  { background: #3a2a1a; color: #f39c12; border: 1px solid #f39c12; }
-    &.delivered       { background: #1a3a2a; color: #2ecc71; border: 1px solid #2ecc71; }
-    &.pending         { background: #2a2a2a; color: #888;    border: 1px solid #444; }
-    &.cancelled       { background: #3a1a1a; color: #e63946; border: 1px solid #e63946; }
+    &.idle             { background: #1a3a2a; color: #2ecc71; border: 1px solid #2ecc71; }
+    &.enroutetopickup  { background: #3a2a1a; color: #f39c12; border: 1px solid #f39c12; }
+    &.intransit        { background: #1a2a3a; color: #3498db; border: 1px solid #3498db; }
+    &.charging         { background: #2a2a2a; color: #888;    border: 1px solid #444; }
+    &.maintenance      { background: #3a1a1a; color: #e63946; border: 1px solid #e63946; }
+    &.pending          { background: #2a2a2a; color: #888;    border: 1px solid #444; }
+    &.delivered        { background: #1a3a2a; color: #2ecc71; border: 1px solid #2ecc71; }
+    &.failed           { background: #3a1a1a; color: #e63946; border: 1px solid #e63946; }
   }
   
   .depot-type {

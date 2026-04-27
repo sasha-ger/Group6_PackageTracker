@@ -17,7 +17,10 @@ public class PackageAccessor : IPackageAccessor
 
     public async Task<Package?> GetById(int id)
     {
-        return await _db.Packages.FindAsync(id);
+        return await _db.Packages
+            .Include(p => p.OriginLocation)
+            .Include(p => p.DestinationLocation)
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<Package?> GetByTrackingNumber(string trackingNumber)
@@ -27,9 +30,13 @@ public class PackageAccessor : IPackageAccessor
 
     public async Task<List<Package>> GetAllActive()
     {
-        return await _db.Packages.Where(p => p.Status != PackageStatus.Delivered && p.Status != PackageStatus.Failed).ToListAsync();
+        return await _db.Packages
+            .Include(p => p.OriginLocation)
+            .Include(p => p.DestinationLocation)
+            .Where(p => p.Status != PackageStatus.Delivered && p.Status != PackageStatus.Failed)
+            .ToListAsync();
     }
-    
+
     public async Task<Package> Create(Package package)
     {
         _db.Packages.Add(package);
@@ -39,7 +46,11 @@ public class PackageAccessor : IPackageAccessor
 
     public async Task<List<Package>> GetBySenderId(int senderId)
     {
-        return await _db.Packages.Where(p => p.SenderId == senderId).ToListAsync();
+        return await _db.Packages
+            .Include(p => p.OriginLocation)
+            .Include(p => p.DestinationLocation)
+            .Where(p => p.SenderId == senderId)
+            .ToListAsync();
     }
 
     public async Task UpdateStatus(int id, PackageStatus status)

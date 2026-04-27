@@ -20,10 +20,10 @@
     </div>
   
     <div class="drone-grid">
-      @for (s of suas; track s.suasId) {
-        <div class="drone-card" [class.selected]="selectedSuas?.suasId === s.suasId" (click)="selectSuas(s)">
+      @for (s of suas; track s.id) {
+        <div class="drone-card" [class.selected]="selectedSuas?.id === s.id" (click)="selectSuas(s)">
           <div class="drone-header">
-            <div class="drone-id">SUAS-{{ s.suasId }}</div>
+            <div class="drone-id">SUAS-{{ s.id }}</div>
             <span class="badge" [ngClass]="s.status.toLowerCase()">{{ s.status }}</span>
           </div>
           <div class="drone-detail">
@@ -31,14 +31,10 @@
             <span class="detail-value">{{ getDepotName(s.currentDepotId) }}</span>
           </div>
           <div class="drone-detail">
-            <span class="detail-label">Range</span>
-            <span class="detail-value">{{ s.rangeKm }} km</span>
-          </div>
-          <div class="drone-detail">
             <span class="detail-label">Package</span>
             <span class="detail-value">
-              @if (s.packageOnBoard) {
-                <span class="has-package">#{{ s.packageOnBoard }}</span>
+              @if (s.currentPackageId) {
+                <span class="has-package">#{{ s.currentPackageId }}</span>
               } @else {
                 <span class="no-package">Empty</span>
               }

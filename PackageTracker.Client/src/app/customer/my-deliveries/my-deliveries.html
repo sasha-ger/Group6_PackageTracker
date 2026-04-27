@@ -10,7 +10,11 @@
 
   <div class="delivery-list">
 
-    @if (packages.length === 0) {
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+
+    @if (!error && packages.length === 0) {
       <p class="empty">You have no deliveries yet.</p>
     }
 
@@ -19,13 +23,13 @@
 
         <div class="delivery-header">
           <h3>Package #{{ d.id }}</h3>
-          <span class="badge">{{ d.status }}</span>
+          <span class="badge" [ngClass]="d.status.toLowerCase()">{{ d.status }}</span>
         </div>
 
         <p><strong>Tracking #:</strong> {{ d.trackingNumber }}</p>
         <p><strong>Origin:</strong> {{ d.originLocation.address }}</p>
         <p><strong>Destination:</strong> {{ d.destinationLocation.address }}</p>
-        <p><strong>Current Depot:</strong> {{ d.currentDepotName }}</p>
+        <p><strong>Recipient:</strong> {{ d.recipient }}</p>
         <p><strong>Created:</strong> {{ d.createdAt | date:'short' }}</p>
 
         <button class="btn secondary" (click)="track(d.id)">

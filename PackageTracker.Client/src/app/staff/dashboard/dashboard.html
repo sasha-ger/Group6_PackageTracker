@@ -48,20 +48,18 @@
             <th>Status</th>
             <th>Current Depot</th>
             <th>Package Onboard</th>
-            <th>Range (km)</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let s of suas">
-            <td>SUAS-{{ s.suasId }}</td>
+            <td>SUAS-{{ s.id }}</td>
             <td>
               <span class="badge" [ngClass]="s.status.toLowerCase()">
                 {{ s.status }}
               </span>
             </td>
-            <td>Depot {{ s.currentDepotId }}</td>
-            <td>{{ s.packageOnBoard ?? '—' }}</td>
-            <td>{{ s.rangeKm }}</td>
+            <td>{{ s.currentDepotId !== null ? 'Depot ' + s.currentDepotId : 'In transit' }}</td>
+            <td>{{ s.currentPackageId ?? '—' }}</td>
           </tr>
         </tbody>
       </table>

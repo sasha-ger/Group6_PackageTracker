@@ -4,10 +4,9 @@
     <p>View the latest status and delivery progress.</p>
   </div>
 
-<button class="back-btn" (click)="goBack()">
-  ← Back to My Deliveries
-</button>
-
+  <button class="back-btn" (click)="goBack()">
+    ← Back to My Deliveries
+  </button>
 
   <div class="card">
 
@@ -15,22 +14,46 @@
       <p class="error">{{ error }}</p>
     }
 
+    @if (isLoading) {
+      <p class="loading">Loading...</p>
+    }
+
     @if (pkg) {
 
       <div class="tracking-header">
         <h2>Tracking #{{ pkg.trackingNumber }}</h2>
-        <span class="badge">{{ pkg.status }}</span>
+        <span class="badge" [ngClass]="pkg.status.toLowerCase()">{{ pkg.status }}</span>
       </div>
 
       <p><strong>Origin:</strong> {{ pkg.originLocation.address }}</p>
       <p><strong>Destination:</strong> {{ pkg.destinationLocation.address }}</p>
+      <p><strong>Recipient:</strong> {{ pkg.recipient }}</p>
+      <p><strong>Created:</strong> {{ pkg.createdAt | date:'short' }}</p>
+      @if (pkg.updatedAt) {
+        <p><strong>Last Updated:</strong> {{ pkg.updatedAt | date:'short' }}</p>
+      }
 
-      <div class="section-title">Latest Event</div>
+      <div class="section-title">Event Timeline</div>
 
-      <p><strong>Event:</strong> {{ lastEvent.eventType }}</p>
-      <p><strong>Depot:</strong> {{ lastEvent.depotName }}</p>
-      <p><strong>Updated:</strong> {{ pkg.updatedAt | date:'short' }}</p>
+      @if (events.length === 0) {
+        <p class="empty">No events yet. Awaiting drone dispatch.</p>
+      }
 
+      @if (events.length > 0) {
+        <ul class="event-timeline">
+          @for (e of events; track e.timestamp) {
+            <li class="event">
+              <div class="event-type">{{ e.eventType }}</div>
+              <div class="event-meta">
+                @if (e.depotName) {
+                  <span class="event-depot">{{ e.depotName }}</span>
+                }
+                <span class="event-time">{{ e.timestamp | date:'short' }}</span>
+              </div>
+            </li>
+          }
+        </ul>
+      }
     }
   </div>
 </div>

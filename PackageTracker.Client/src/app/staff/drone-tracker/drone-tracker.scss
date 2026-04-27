@@ -133,10 +133,9 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
   
-    &.idle           { background: var(--success-light); color: #065f46; }
-    &.in_transit     { background: var(--info-light);    color: #1e40af; }
-    &.en_route_depot { background: var(--warning-light); color: #92400e; }
-    &.delivered      { background: var(--success-light); color: #065f46; }
-    &.pending        { background: var(--bg-surface);    color: var(--text-muted); }
-    &.cancelled      { background: var(--danger-light);  color: var(--primary-dark); }
+    &.idle             { background: var(--success-light); color: #065f46; }
+    &.enroutetopickup  { background: var(--warning-light); color: #92400e; }
+    &.intransit        { background: var(--info-light);    color: #1e40af; }
+    &.charging         { background: var(--bg-surface);    color: var(--text-muted); }
+    &.maintenance      { background: var(--danger-light);  color: var(--primary-dark); }
   }

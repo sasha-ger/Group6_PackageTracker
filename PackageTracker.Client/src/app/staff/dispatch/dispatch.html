@@ -24,9 +24,9 @@
             (ngModelChange)="onSuasSelect()"
             name="suas">
             <option [ngValue]="null" disabled>Choose a drone...</option>
-            @for (s of suas; track s.suasId) {
-              <option [ngValue]="s.suasId">
-                SUAS-{{ s.suasId }} — {{ getDepotName(s.currentDepotId) }}
+            @for (s of suas; track s.id) {
+              <option [ngValue]="s.id">
+                SUAS-{{ s.id }} — {{ s.currentDepotId !== null ? getDepotName(s.currentDepotId) : 'In transit' }}
               </option>
             }
           </select>

@@ -26,14 +26,15 @@ export class DroneTracker implements OnInit {
     this.depotService.getAllDepots().subscribe(data => this.depots = data);
   }
 
-  getDepotName(depotId: number): string {
+  getDepotName(depotId: number | null): string {
+    if (depotId === null) return 'In transit';
     return this.depots.find(d => d.depotId === depotId)?.name ?? `Depot ${depotId}`;
   }
 
   selectSuas(s: SUAS) {
-    this.selectedSuas = this.selectedSuas?.suasId === s.suasId ? null : s;
+    this.selectedSuas = this.selectedSuas?.id === s.id ? null : s;
   }
 
-  get idleCount() { return this.suas.filter(s => s.status === 'IDLE').length; }
-  get activeCount() { return this.suas.filter(s => s.status !== 'IDLE').length; }
+  get idleCount() { return this.suas.filter(s => s.status === 'Idle').length; }
+  get activeCount() { return this.suas.filter(s => s.status !== 'Idle').length; }
 }

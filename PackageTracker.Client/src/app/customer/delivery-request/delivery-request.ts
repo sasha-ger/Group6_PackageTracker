@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DeliveryService } from '../../core/services/delivery.service';
 
 @Component({
   selector: 'app-delivery-request',
@@ -10,15 +11,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './delivery-request.scss',
 })
 export class DeliveryRequestComponent {
-
-  // Dummy depot data (matches backend Depot + Location)
-  depots = [
-    { id: 1, name: 'Lincoln – O & 27th', location: { latitude: 40.8001, longitude: -96.6678 }},
-    { id: 2, name: 'Lincoln – 84th & Hwy 2', location: { latitude: 40.7372, longitude: -96.6044 }},
-    { id: 3, name: 'Omaha – 72nd & Dodge', location: { latitude: 41.2625, longitude: -96.0461 }},
-    { id: 4, name: 'Seward Depot', location: { latitude: 40.9070, longitude: -97.0989 }},
-    { id: 5, name: 'Grand Island Depot', location: { latitude: 40.9263, longitude: -98.3420 }}
-  ];
 
   pickup = {
     address: '',
@@ -32,31 +24,13 @@ export class DeliveryRequestComponent {
     longitude: null as number | null
   };
 
-  closestDepot: any = null;
+  recipient = '';
 
   error = '';
   success = '';
+  isSubmitting = false;
 
-  calculateClosestDepot() {
-    if (this.pickup.latitude == null || this.pickup.longitude == null) return;
-
-    let best = null;
-    let bestDist = Infinity;
-
-    for (const depot of this.depots) {
-      const d = Math.sqrt(
-        Math.pow(depot.location.latitude - this.pickup.latitude, 2) +
-        Math.pow(depot.location.longitude - this.pickup.longitude, 2)
-      );
-
-      if (d < bestDist) {
-        bestDist = d;
-        best = depot;
-      }
-    }
-
-    this.closestDepot = best;
-  }
+  constructor(private deliveryService: DeliveryService) {}
 
   submitRequest() {
     this.error = '';
@@ -77,14 +51,30 @@ export class DeliveryRequestComponent {
       return;
     }
 
-    this.calculateClosestDepot();
-
-    if (!this.closestDepot) {
-      this.error = 'Could not determine closest depot.';
+    if (!this.recipient.trim()) {
+      this.error = 'Please enter a recipient name.';
       return;
     }
 
-    // Dummy success message
-    this.success = `Delivery request created! Closest depot: ${this.closestDepot.name}`;
+    this.isSubmitting = true;
+
+    this.deliveryService.createDeliveryRequest({
+      originAddress: this.pickup.address,
+      originLat: this.pickup.latitude,
+      originLng: this.pickup.longitude,
+      destinationAddress: this.destination.address,
+      destinationLat: this.destination.latitude,
+      destinationLng: this.destination.longitude,
+      recipient: this.recipient.trim()
+    }).subscribe({
+      next: msg => {
+        this.success = msg || 'Delivery request submitted successfully.';
+        this.isSubmitting = false;
+      },
+      error: err => {
+        this.error = typeof err?.error === 'string' ? err.error : 'Failed to submit delivery request.';
+        this.isSubmitting = false;
+      }
+    });
   }
 }
