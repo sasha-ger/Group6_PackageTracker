@@ -42,5 +42,16 @@ export class AuthService {
   isStaff(): boolean { return localStorage.getItem('role') === 'Staff'; }
   isLoggedIn(): boolean { return !!localStorage.getItem('token'); }
   getToken(): string | null { return localStorage.getItem('token'); }
-  getUserIdFromToken(): number { return 1; } // will come from JWT claims
+
+  getUserIdFromToken(): number {
+    const token = this.getToken();
+    if (!token) return 0;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const sub = payload.sub ?? payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+      return Number(sub) || 0;
+    } catch {
+      return 0;
+    }
+  }
 }
