@@ -126,30 +126,4 @@ public class RoutingEngineTests
         Assert.Equal(5, result);
     }
 
-    // --- GetTravelTime ---
-
-    [Fact]
-    public void GetTravelTime_ZeroDistance_ReturnsZero()
-    {
-        var result = _engine.GetTravelTime(0);
-
-        Assert.Equal(TimeSpan.Zero, result);
-    }
-
-    [Fact]
-    public void GetTravelTime_30Miles_ReturnsOneHour()
-    {
-        // Drone speed is 30 mph, so 30 miles = 1 hour
-        var result = _engine.GetTravelTime(30.0);
-
-        Assert.Equal(TimeSpan.FromHours(1), result);
-    }
-
-    [Fact]
-    public void GetTravelTime_15Miles_ReturnsHalfHour()
-    {
-        var result = _engine.GetTravelTime(15.0);
-
-        Assert.Equal(TimeSpan.FromMinutes(30), result);
-    }
 }

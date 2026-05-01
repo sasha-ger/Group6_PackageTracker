@@ -10,6 +10,8 @@ public class StaffTrackingEngineTests
 {
     private readonly Mock<IDroneAccessor> _mockDroneAccessor = new();
     private readonly Mock<IPackageAccessor> _mockPackageAccessor = new();
+    private readonly Mock<IDepotAccessor> _mockDepotAccessor = new();
+    private readonly Mock<IRoutingEngine> _mockRoutingEngine = new();
     private readonly StaffTrackingEngine _engine;
 
     private static Drone MakeDrone(int id, DroneStatus status, int? currentPackageId = null) => new()
@@ -34,7 +36,7 @@ public class StaffTrackingEngineTests
 
     public StaffTrackingEngineTests()
     {
-        _engine = new StaffTrackingEngine(_mockDroneAccessor.Object, _mockPackageAccessor.Object);
+        _engine = new StaffTrackingEngine(_mockDroneAccessor.Object, _mockPackageAccessor.Object, _mockDepotAccessor.Object, _mockRoutingEngine.Object);
     }
 
     // --- GetAllDroneStatuses ---

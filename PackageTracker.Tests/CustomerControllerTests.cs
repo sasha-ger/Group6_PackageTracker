@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using PackageTracker.Accessors.Interfaces;
 using PackageTracker.Engines;
 using PackageTracker.Managers.Controllers;
 using PackageTracker.Managers.Dtos;
@@ -14,6 +15,8 @@ public class CustomerControllerTests
 {
     private readonly Mock<IRequestEngine> _mockRequestEngine = new();
     private readonly Mock<IUserTrackingEngine> _mockUserTrackingEngine = new();
+    private readonly Mock<IPackageAccessor> _mockPackageAccessor = new();
+    private readonly Mock<IPackageStatusEventAccessor> _mockEventAccessor = new();
     private readonly CustomerController _controller;
 
     private static readonly DeliveryRequestDto ValidRequest = new()
@@ -40,7 +43,7 @@ public class CustomerControllerTests
 
     public CustomerControllerTests()
     {
-        _controller = new CustomerController(_mockRequestEngine.Object, _mockUserTrackingEngine.Object);
+        _controller = new CustomerController(_mockRequestEngine.Object, _mockUserTrackingEngine.Object, _mockPackageAccessor.Object, _mockEventAccessor.Object);
 
         // Set up a default authenticated user on the HttpContext
         SetUserId(1);
